@@ -86,14 +86,11 @@ func serializeAnchor(anchor: HKQueryAnchor?) -> String? {
 }
 
 func toBase64(_ data: Any?) -> String? {
-  if let data = data {
-    let data = NSKeyedArchiver.archivedData(withRootObject: data)
-    let encoded = data.base64EncodedString()
-
-    return encoded
+  guard let archivedData = try? NSKeyedArchiver.archivedData(withRootObject: data, requiringSecureCoding: true) else {
+    return nil
   }
 
-  return nil
+  return archivedData.base64EncodedString()
 }
 
 func sampleQueryAsync(
